@@ -2,7 +2,6 @@ import axios from 'axios'
 import { createAction } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-// axios.defaults.baseURL = "https://connections-api.herokuapp.com";
 // axios.defaults.baseURL = 'https://kylory-contacts.herokuapp.com'
 axios.defaults.baseURL = 'http://localhost:4000/api'
 
@@ -19,27 +18,14 @@ export const registerUser = createAsyncThunk(
   'auth/register',
   async (credentials, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post('/users/signup', credentials)
-      token.set(data.token)
-      return data
+      const response = await axios.post('/users/signup', credentials)
+      token.set(response.data.ResponseBody.token)
+      return response.data.ResponseBody
     } catch (error) {
       return rejectWithValue(error)
     }
   }
 )
-
-// export const logIn = createAsyncThunk(
-//   'auth/login',
-//   async (credentials, { rejectWithValue }) => {
-//     try {
-//       const { data} = await axios.post('/users/login', credentials)
-//       token.set(data.token)
-//       return data
-//     } catch (error) {
-//       return rejectWithValue(error)
-//     }
-//   }
-// )
 
 export const logIn = createAsyncThunk(
   'auth/login',
@@ -47,7 +33,6 @@ export const logIn = createAsyncThunk(
     try {
       const response = await axios.post('/users/login', credentials)
       token.set(response.data.ResponseBody.token)
-      console.log('logIn', response)
       return response.data.ResponseBody
     } catch (error) {
       return rejectWithValue(error)
@@ -79,8 +64,8 @@ export const getUserInfo = createAsyncThunk(
 
     token.set(LStoken)
     try {
-      const { data } = await axios.get('/users/current')
-      return data
+      const response = await axios.get('/users/current')
+      return response.data.ResponseBody
     } catch (error) {
       return thunkAPI.rejectWithValue()
     }

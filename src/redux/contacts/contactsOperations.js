@@ -1,27 +1,27 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { createAction } from "@reduxjs/toolkit";
-import axios from "axios";
-import shortid from "shortid";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-axios.defaults.baseURL = "https://connections-api.herokuapp.com";
+// axios.defaults.baseURL = 'https://kylory-contacts.herokuapp.com'
+axios.defaults.baseURL = 'http://localhost:4000/api';
 
 export const DB_fetchContacts = createAsyncThunk(
-  "contacts/fetchContacts",
+  'contacts/fetchContacts',
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get("/contacts");
-      return data;
+      const { data } = await axios.get('/contacts');
+      return data.contacts;
     } catch (error) {
       return rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const DB_postContact = createAsyncThunk(
-  "contacts/postContact",
+  'contacts/postContact',
   async ({ name, number }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post("/contacts", {
+      const { data } = await axios.post('/contacts', {
         name: `${name}`,
         number: `${number}`,
       });
@@ -29,11 +29,11 @@ export const DB_postContact = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const DB_deleteContact = createAsyncThunk(
-  "contacts/deleteContact",
+  'contacts/deleteContact',
   async (id, { rejectWithValue }) => {
     try {
       await axios.delete(`/contacts/${id}`);
@@ -41,19 +41,7 @@ export const DB_deleteContact = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error);
     }
-  }
+  },
 );
 
-export const addContact = createAction(
-  "contactsList/addContact",
-  ({ name, number }) => ({
-    payload: {
-      id: shortid.generate(),
-      name: name,
-      number: number,
-    },
-  })
-);
-
-export const deleteContact = createAction("contacts/deleteContact");
-export const filterContacts = createAction("contacts/filterContacts");
+export const filterContacts = createAction('contacts/filterContacts');

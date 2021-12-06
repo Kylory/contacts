@@ -1,28 +1,40 @@
-import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { contactsOperations, contactsSelectors } from "redux/contacts";
-import { Button, TextField } from "@material-ui/core";
-import PositionedSnackbar from "../Snackbar";
-import styles from "./ContactForm.module.css";
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { contactsOperations, contactsSelectors } from 'redux/contacts';
+import { Button, TextField } from '@material-ui/core';
+import PositionedSnackbar from '../Snackbar';
+import styles from './ContactForm.module.css';
 
 export default function ContactForm() {
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
   const [alreadyInContacts, setAlreadyInContacts] = useState(false);
-  const isButtonDisable = name === "" || number === "";
+  const isButtonDisable = name === '' || number === '';
 
   const contacts = useSelector(contactsSelectors.getContacts);
   const dispatch = useDispatch();
 
-  const handleChange = (e) => {
+  const addContact = async () => {
+    await dispatch(
+      contactsOperations.DB_postContact({
+        name: name,
+        number: number,
+      }),
+    );
+    dispatch(contactsOperations.DB_fetchContacts());
+  };
+
+  const handleChange = e => {
     setAlreadyInContacts(false);
     const { name, value } = e.target;
+    // const { name, value } = e.currentTarget;
+
     switch (name) {
-      case "name":
+      case 'name':
         setName(value);
         break;
 
-      case "number":
+      case 'number':
         setNumber(value);
         break;
 
@@ -31,40 +43,28 @@ export default function ContactForm() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
 
-    if (contacts && contacts.find((contact) => contact.name === name)) {
+    if (contacts && contacts.find(contact => contact.name === name)) {
       setAlreadyInContacts(true);
       return;
     }
 
     setAlreadyInContacts(false);
-
-    dispatch(contactsOperations.addContact({ name: name, number: number }));
-
-    (async () => {
-      await dispatch(
-        contactsOperations.DB_postContact({
-          name: name,
-          number: number,
-        })
-      );
-      await dispatch(contactsOperations.DB_fetchContacts());
-    })();
-
+    addContact();
     reset();
   };
 
   const reset = () => {
-    setName("");
-    setNumber("");
+    setName('');
+    setNumber('');
   };
 
   return (
     <>
       {alreadyInContacts && (
-        <PositionedSnackbar message={name + " is already in contacts"} />
+        <PositionedSnackbar message={name + ' is already in contacts'} />
       )}
       <form
         className={styles.contactForm}

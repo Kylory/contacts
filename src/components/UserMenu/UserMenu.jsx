@@ -1,13 +1,14 @@
-import { authSelectors, authOperations } from "redux/auth";
-import { useSelector, useDispatch } from "react-redux";
-import IconButton from "@material-ui/core/IconButton";
-import ExitToAppTwoToneIcon from "@material-ui/icons/ExitToAppTwoTone";
-import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
-import styles from "./UserMenu.module.css";
+import { authSelectors, authOperations } from 'redux/auth';
+import { useSelector, useDispatch } from 'react-redux';
+import IconButton from '@material-ui/core/IconButton';
+import ExitToAppTwoToneIcon from '@material-ui/icons/ExitToAppTwoTone';
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
+import styles from './UserMenu.module.css';
 
 export default function UserMenu() {
   const name = useSelector(authSelectors.getUserName);
   const dispatch = useDispatch();
+
   return (
     <div className={styles.UserMenu}>
       <AccountCircleOutlinedIcon />
@@ -20,11 +21,7 @@ export default function UserMenu() {
         }}
         size="small"
       >
-        <ExitToAppTwoToneIcon
-          onClick={() => {
-            dispatch(authOperations.logOut());
-          }}
-        />
+        <ExitToAppTwoToneIcon />
       </IconButton>
     </div>
   );
