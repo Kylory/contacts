@@ -1,23 +1,33 @@
-import { createSelector } from "@reduxjs/toolkit";
+import { createSelector } from '@reduxjs/toolkit';
 
-const getContacts = (state) => state.contacts.contactsList;
-const getFilter = (state) => state.contacts.filter;
-const isLoading = (state) => state.contacts.isLoading;
-const error = (state) => state.contacts.error;
+const getContacts = state => state.contacts.contactsList;
+const getFilter = state => state.contacts.filter;
+const isLoading = state => state.contacts.isLoading;
+const error = state => state.contacts.error;
+const isModalOpen = state => state.contacts.isModalOpen;
+const editContactId = state => state.contacts.editContactId;
 
 const getFilteredContacts = createSelector(
   [getContacts, getFilter],
   (contacts, filter) => {
     if (contacts && filter) {
       const normalizedFilter = filter.toLowerCase();
-      const filteredContact = contacts.filter((contact) =>
-        contact.name.toLowerCase().includes(normalizedFilter)
+      const filteredContact = contacts.filter(contact =>
+        contact.name.toLowerCase().includes(normalizedFilter),
       );
 
       return filteredContact;
     }
     return contacts;
-  }
+  },
 );
 
-export { getContacts, getFilter, getFilteredContacts, isLoading, error };
+export {
+  getContacts,
+  getFilter,
+  getFilteredContacts,
+  isLoading,
+  error,
+  isModalOpen,
+  editContactId,
+};

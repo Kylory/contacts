@@ -3,14 +3,23 @@
   text-align: center;
 }
 
-.ContactsList li:not(:last-child) {
-  margin-bottom: 10px;
+.ContactsList li {
+  font-size: 22px;
 }
 
-.ContactsList button {
-  margin-left: 10px;
+.ContactsList li:not(:last-child) {
+  margin-bottom: 15px;
 }
 
 .error {
   padding-top: 20px;
+}
+
+.editButton {
+  margin-left: 15px;
+  margin-bottom: 3px;
+}
+
+.deleteButton {
+  margin-left: 5px;
 }

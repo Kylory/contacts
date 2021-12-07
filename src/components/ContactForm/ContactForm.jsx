@@ -1,17 +1,14 @@
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { contactsOperations, contactsSelectors } from 'redux/contacts';
+import { useDispatch } from 'react-redux';
+import { contactsOperations } from 'redux/contacts';
 import { Button, TextField } from '@material-ui/core';
-import PositionedSnackbar from '../Snackbar';
 import styles from './ContactForm.module.css';
 
-export default function ContactForm() {
+export default function ContactForm({ buttonTitle }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const [alreadyInContacts, setAlreadyInContacts] = useState(false);
   const isButtonDisable = name === '' || number === '';
 
-  const contacts = useSelector(contactsSelectors.getContacts);
   const dispatch = useDispatch();
 
   const addContact = async () => {
@@ -25,9 +22,7 @@ export default function ContactForm() {
   };
 
   const handleChange = e => {
-    setAlreadyInContacts(false);
     const { name, value } = e.target;
-    // const { name, value } = e.currentTarget;
 
     switch (name) {
       case 'name':
@@ -46,12 +41,6 @@ export default function ContactForm() {
   const handleSubmit = e => {
     e.preventDefault();
 
-    if (contacts && contacts.find(contact => contact.name === name)) {
-      setAlreadyInContacts(true);
-      return;
-    }
-
-    setAlreadyInContacts(false);
     addContact();
     reset();
   };
@@ -63,9 +52,6 @@ export default function ContactForm() {
 
   return (
     <>
-      {alreadyInContacts && (
-        <PositionedSnackbar message={name + ' is already in contacts'} />
-      )}
       <form
         className={styles.contactForm}
         onSubmit={handleSubmit}
@@ -100,7 +86,7 @@ export default function ContactForm() {
           size="small"
           variant="contained"
         >
-          Add contact
+          {buttonTitle}
         </Button>
       </form>
     </>

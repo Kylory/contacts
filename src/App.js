@@ -1,38 +1,40 @@
-import { Switch } from 'react-router-dom'
-import { useEffect, Suspense, lazy } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { authOperations, authSelectors } from './redux/auth'
-import { contactsOperations } from 'redux/contacts'
+import { Switch } from 'react-router-dom';
+import { useEffect, Suspense, lazy } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { authOperations, authSelectors } from './redux/auth';
+import { contactsOperations } from 'redux/contacts';
 
-import PrivateRoute from 'components/PrivateRoute'
-import PublicRoute from 'components/PublicRoute'
+import PrivateRoute from 'components/PrivateRoute';
+import PublicRoute from 'components/PublicRoute';
 
-import Container from 'components/Container/Container'
-import AppBar from 'components/AppBar/AppBar'
-import ContactForm from 'components/ContactForm/ContactForm'
-import ContactsList from 'components/ContactsList/ContactsList'
-import SearchContacts from 'components/SearchContacts/SearchContacts'
+import Container from 'components/Container/Container';
+import AppBar from 'components/AppBar/AppBar';
+import ContactForm from 'components/ContactForm/ContactForm';
+import ContactsList from 'components/ContactsList/ContactsList';
+import SearchContacts from 'components/SearchContacts/SearchContacts';
 
-const HomeView = lazy(() => import('./components/HomeView/HomeView'))
+const HomeView = lazy(() => import('./components/HomeView/HomeView'));
 const RegisterView = lazy(() =>
-  import('./components/RegisterView/RegisterView')
-)
-const LogInView = lazy(() => import('./components/LogInView/LogInView'))
+  import('./components/RegisterView/RegisterView'),
+);
+const LogInView = lazy(() => import('./components/LogInView/LogInView'));
 
 const App = () => {
-  const dispatch = useDispatch()
-  const isLoggedIn = useSelector(authSelectors.isLoggedIn)
-  const isFetchingCurrentUser = useSelector(authSelectors.isFetchingCurrentUser)
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(authSelectors.isLoggedIn);
+  const isFetchingCurrentUser = useSelector(
+    authSelectors.isFetchingCurrentUser,
+  );
 
   useEffect(() => {
     async function refreshPage() {
-      await dispatch(authOperations.getUserInfo())
+      await dispatch(authOperations.getUserInfo());
       if (isLoggedIn) {
-        dispatch(contactsOperations.DB_fetchContacts())
+        dispatch(contactsOperations.DB_fetchContacts());
       }
     }
-    refreshPage()
-  }, [dispatch, isLoggedIn])
+    refreshPage();
+  }, [dispatch, isLoggedIn]);
 
   return (
     !isFetchingCurrentUser && (
@@ -41,28 +43,28 @@ const App = () => {
 
         <Switch>
           <Suspense fallback={''}>
-            <PublicRoute path='/' exact>
+            <PublicRoute path="/" exact>
               <HomeView />
             </PublicRoute>
 
-            <PrivateRoute path='/contacts' redirectTo='/login'>
-              <ContactForm />
+            <PrivateRoute path="/contacts" redirectTo="/login">
+              <ContactForm buttonTitle="Add contact" />
               <SearchContacts />
               <ContactsList />
             </PrivateRoute>
 
-            <PublicRoute path='/register' restricted>
+            <PublicRoute path="/register" restricted>
               <RegisterView />
             </PublicRoute>
 
-            <PublicRoute path='/login' redirectTo='/contacts' restricted>
+            <PublicRoute path="/login" redirectTo="/contacts" restricted>
               <LogInView />
             </PublicRoute>
           </Suspense>
         </Switch>
       </Container>
     )
-  )
-}
+  );
+};
 
-export default App
+export default App;
