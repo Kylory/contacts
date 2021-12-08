@@ -16,12 +16,12 @@
   margin-bottom: 20px;
 }
 
-.contactForm .button:hover {
+.contactForm .editButton:hover {
   color: #fff;
   background-color: #3f51b5;
 }
 
-.contactForm .button:focus {
+.contactForm .editButton:focus {
   color: #fff;
   background-color: #3f51b5;
 }
