@@ -11,16 +11,6 @@ export default function ContactForm({ buttonTitle }) {
 
   const dispatch = useDispatch();
 
-  const addContact = async () => {
-    await dispatch(
-      contactsOperations.DB_postContact({
-        name: name,
-        number: number,
-      }),
-    );
-    dispatch(contactsOperations.DB_fetchContacts());
-  };
-
   const handleChange = e => {
     const { name, value } = e.target;
 
@@ -41,7 +31,13 @@ export default function ContactForm({ buttonTitle }) {
   const handleSubmit = e => {
     e.preventDefault();
 
-    addContact();
+    dispatch(
+      contactsOperations.DB_postContact({
+        name: name,
+        number: number,
+      }),
+    );
+
     reset();
   };
 

@@ -4,28 +4,26 @@ import { contactsOperations } from 'redux/contacts';
 
 const contactsReducer = createReducer([], {
   [contactsOperations.DB_fetchContacts.fulfilled]: (_, { payload }) => payload,
-  [contactsOperations.addContact]: (state, { payload }) => [...state, payload],
-  [contactsOperations.DB_postContact.fulfilled]: () => {},
-  [contactsOperations.deleteContact]: (state, { payload }) =>
-    state.filter(contact => contact.id !== payload),
+  [contactsOperations.DB_postContact.fulfilled]: (state, { payload }) => [
+    ...state,
+    payload,
+  ],
+
+  [contactsOperations.DB_deleteContact.fulfilled]: (state, { payload }) =>
+    state.filter(contact => contact._id !== payload),
+
+  [contactsOperations.DB_updateContactById.fulfilled]: (state, { payload }) => {
+    const contactIndex = state.findIndex(
+      contact => contact._id === payload._id,
+    );
+    const updatedState = [...state];
+    updatedState.splice(contactIndex, 1, payload);
+    return updatedState;
+  },
 });
 
 const filterReducer = createReducer('', {
   [contactsOperations.filterContacts]: (_, { payload }) => payload,
-});
-
-const isLoadingReducer = createReducer(false, {
-  [contactsOperations.DB_fetchContacts.pending]: () => true,
-  [contactsOperations.DB_fetchContacts.fulfilled]: () => false,
-  [contactsOperations.DB_fetchContacts.rejected]: () => false,
-
-  [contactsOperations.DB_postContact.pending]: () => true,
-  [contactsOperations.DB_postContact.fulfilled]: () => false,
-  [contactsOperations.DB_postContact.rejected]: () => false,
-
-  [contactsOperations.DB_deleteContact.pending]: () => true,
-  [contactsOperations.DB_deleteContact.fulfilled]: () => false,
-  [contactsOperations.DB_deleteContact.rejected]: () => false,
 });
 
 const errorReducer = createReducer(null, {
@@ -52,7 +50,6 @@ const editContactIdReducer = createReducer(null, {
 export const rootReducer = combineReducers({
   contactsList: contactsReducer,
   filter: filterReducer,
-  isLoading: isLoadingReducer,
   error: errorReducer,
   isModalOpen: isModalOpenReducer,
   editContactId: editContactIdReducer,

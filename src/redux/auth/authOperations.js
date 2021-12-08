@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createAction } from '@reduxjs/toolkit';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-axios.defaults.baseURL = 'https://contacts-back.herokuapp.com';
+axios.defaults.baseURL = 'https://contacts-back.herokuapp.com/api';
 // axios.defaults.baseURL = 'http://localhost:4000/api';
 
 const token = {

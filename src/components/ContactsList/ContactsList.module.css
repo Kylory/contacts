@@ -1,5 +1,5 @@
 .ContactsList {
-  padding-top: 20px;
+  padding-top: 30px;
   text-align: center;
 }
 
@@ -15,11 +15,11 @@
   padding-top: 20px;
 }
 
-.editButton {
+.ContactsList .editButton {
   margin-left: 15px;
   margin-bottom: 3px;
 }
 
-.deleteButton {
+.ContactsList .deleteButton {
   margin-left: 5px;
 }

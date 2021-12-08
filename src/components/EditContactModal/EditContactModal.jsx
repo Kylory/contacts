@@ -42,8 +42,7 @@ export default function EditContact({ buttonTitle }) {
       },
     };
 
-    await dispatch(contactsOperations.DB_updateContactById(data));
-    dispatch(contactsOperations.DB_fetchContacts());
+    dispatch(contactsOperations.DB_updateContactById(data));
     reset();
   };
 

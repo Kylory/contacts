@@ -29,8 +29,7 @@ export default function ContactsList() {
   }, [dispatch, isLoggedIn]);
 
   async function deleteItem(id) {
-    await dispatch(contactsOperations.DB_deleteContact(id));
-    dispatch(contactsOperations.DB_fetchContacts());
+    dispatch(contactsOperations.DB_deleteContact(id));
   }
 
   return (
